@@ -1,10 +1,13 @@
-name: Dienstplan KI Parser (ONNX)
+name: "Dienstplan KI Parser"
 version: "1.0.0"
-slug: dienstplan_ki_parser
-description: Erkennung von Schichtcodes im Dienstplanbild per KI (ONNX)
-startup: services
+slug: "dienstplan_ki_parser"
+description: "Verarbeitet Dienstpläne aus Bildern automatisch mit KI"
+arch:
+  - aarch64
+  - armv7
+  - amd64
+startup: application
 boot: auto
-homeassistant_api: false
-host_network: false
+host_network: true
 options: {}
 schema: {}

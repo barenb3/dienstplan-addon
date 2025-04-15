@@ -1,13 +1,13 @@
 name: "Dienstplan KI Parser"
-version: "1.0.1"
 slug: "dienstplan_ki_parser"
 description: "Verarbeitet Dienstpläne aus Bildern automatisch mit KI"
+version: "1.0.0"
+startup: application
+boot: auto
+host_network: true
 arch:
   - aarch64
   - armv7
   - amd64
-startup: application
-boot: auto
-host_network: true
 options: {}
 schema: {}

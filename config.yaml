@@ -1,5 +1,5 @@
 name: "Dienstplan KI Parser"
-version: "1.0.1"
+version: "1.0.0"
 slug: "dienstplan_ki_parser"
 description: "Verarbeitet Dienstpläne aus Bildern automatisch mit KI"
 arch:

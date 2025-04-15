@@ -1,18 +1,21 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_FROM=ghcr.io/hassio-addons/base-debian:12.2.6
+FROM ${BUILD_FROM}
 
 ENV LANG C.UTF-8
 
-# Systemabhängigkeiten installieren
-RUN apk add --no-cache \
-    python3 \
-    py3-pip \
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    python3 python3-pip \
+    libgl1 \
     tesseract-ocr \
-    libstdc++ \
-    jpeg-dev \
-    zlib-dev \
-    libpng-dev \
-    && pip3 install --no-cache-dir \
-    ultralytics \
-    opencv-python-headless \
-    numpy
+    tesseract-ocr-deu \
+    && apt-get clean
+
+# Install Python packages
+RUN pip3 install --no-cache-dir ultralytics opencv-python-headless numpy
+
+# Copy files
+COPY run.py /run.py
+
+CMD ["python3", "/run.py"]

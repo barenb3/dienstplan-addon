@@ -1,0 +1,9 @@
+name: Dienstplan KI Parser
+version: "1.0"
+slug: dienstplan_ki_parser
+description: Erkennt automatisch Schichtpläne und erstellt ICS-Dateien
+startup: services
+boot: auto
+homeassistant_api: true
+options: {}
+schema: {}

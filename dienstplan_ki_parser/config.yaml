@@ -1,12 +1,10 @@
-name: Dienstplan KI Parser
-version: 1.0.13
+name: Dienstplan KI Parser (ONNX)
+version: "1.0.0"
 slug: dienstplan_ki_parser
-description: Dienstplanerkennung mit YOLO und ICS-Export
-arch:
-  - amd64
-  - aarch64
-startup: application
-boot: manual
-init: false
+description: Erkennung von Schichtcodes im Dienstplanbild per KI (ONNX)
+startup: services
+boot: auto
+homeassistant_api: false
+host_network: false
 options: {}
 schema: {}

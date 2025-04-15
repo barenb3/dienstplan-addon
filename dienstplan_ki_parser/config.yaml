@@ -1,5 +1,5 @@
 name: "Dienstplan KI Parser"
-version: "1.0.0"
+version: "1.0.1"
 slug: "dienstplan_ki_parser"
 description: "Erkennt automatisch Schichtpläne anhand eines Bildes"
 startup: services

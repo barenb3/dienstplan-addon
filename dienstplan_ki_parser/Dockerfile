@@ -3,12 +3,11 @@ FROM $BUILD_FROM
 
 ENV LANG C.UTF-8
 
-# Installiere benötigte Systempakete
+# Systemabhängigkeiten installieren
 RUN apk add --no-cache \
     python3 \
     py3-pip \
     tesseract-ocr \
-    tesseract-ocr-data-deu \
     libstdc++ \
     jpeg-dev \
     zlib-dev \

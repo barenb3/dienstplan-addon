@@ -6,8 +6,8 @@ import os
 import re
 import onnxruntime as ort
 
-MODEL_PATH = "/homeassistant/dienstplan_ki_parser/best.onnx"
-INPUT_DIR = "/homeassistant/www"
+MODEL_PATH = "/config/dienstplan_ki_parser/best.onnx"
+INPUT_DIR = "/config/www"
 
 # Neuestes Bild im Format dienstplan_MM.JJJJ.jpg finden
 jpg_files = [f for f in os.listdir(INPUT_DIR) if f.startswith("dienstplan_") and f.endswith(".jpg")]

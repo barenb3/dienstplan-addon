@@ -1,4 +1,3 @@
-
 # === run.py: Hauptskript für das Home Assistant Dienstplan-Add-on ===
 import cv2
 import numpy as np
@@ -25,6 +24,20 @@ startdatum = datetime(jahr, monat, 1)
 anzahl_tage = (datetime(jahr, monat % 12 + 1, 1) - timedelta(days=1)).day
 
 RASTER_SPALTEN, RASTER_ZEILEN = 7, 6
+
+SCHICHTZEITEN = {
+    "F01": ("06:45", "14:00"),
+    "F04": ("06:45", "10:30"),
+    "F06": ("07:00", "14:00"),
+    "F07": ("07:00", "13:30"),
+    "F09": ("07:00", "13:00"),
+    "F10": ("07:00", "12:30"),
+    "F13": ("07:00", "10:30"),
+    "F14": ("07:00", "10:00"),
+    "S01": ("13:45", "21:00"),
+    "S04": ("13:45", "20:30"),
+}
+
 
 def get_raster_position(xc, yc, width, height):
     cell_w, cell_h = width / RASTER_SPALTEN, height / RASTER_ZEILEN
@@ -56,7 +69,9 @@ with open("/config/dienstplan.ics", "w", encoding="utf-8") as f:
         if i >= anzahl_tage:
             continue
         datum = startdatum + timedelta(days=i)
-        f.write(f"BEGIN:VEVENT\nSUMMARY:{label}\nDTSTART;VALUE=DATE:{datum.strftime('%Y%m%d')}\nDTEND;VALUE=DATE:{(datum + timedelta(days=1)).strftime('%Y%m%d')}\nEND:VEVENT\n")
+        if label in SCHICHTZEITEN:
+            start, end = SCHICHTZEITEN[label]
+            f.write(f"BEGIN:VEVENT\nSUMMARY:{label}\nDTSTART;TZID=Europe/Berlin:{datum.strftime('%Y%m%d')}T{start.replace(':','')}00\nDTEND;TZID=Europe/Berlin:{datum.strftime('%Y%m%d')}T{end.replace(':','')}00\nEND:VEVENT\n")
     f.write("END:VCALENDAR\n")
 
 print("✅ Dienstplan verarbeitet und als dienstplan.ics gespeichert.")

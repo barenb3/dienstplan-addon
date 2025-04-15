@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import os
 import re
 
-MODEL_PATH = "best.pt"
+MODEL_PATH = "/config/dienstplan_ki_parser/best.pt"
 INPUT_DIR = "/config/www"
 
 # Neuestes Bild im Format dienstplan_MM.JJJJ.jpg finden
@@ -37,7 +37,6 @@ SCHICHTZEITEN = {
     "S01": ("13:45", "21:00"),
     "S04": ("13:45", "20:30"),
 }
-
 
 def get_raster_position(xc, yc, width, height):
     cell_w, cell_h = width / RASTER_SPALTEN, height / RASTER_ZEILEN

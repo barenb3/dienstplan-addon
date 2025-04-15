@@ -1,12 +1,12 @@
-# === run.py: Hauptskript für das Home Assistant Dienstplan-Add-on ===
+# === run.py: Hauptskript für das Home Assistant Dienstplan-Add-on mit ONNX-Inferenz ===
 import cv2
 import numpy as np
-from ultralytics import YOLO
+import onnxruntime as ort
 from datetime import datetime, timedelta
 import os
 import re
 
-MODEL_PATH = "/config/dienstplan_ki_parser/best.pt"
+MODEL_PATH = "/config/dienstplan_ki_parser/best.onnx"
 INPUT_DIR = "/config/www"
 
 # Neuestes Bild im Format dienstplan_MM.JJJJ.jpg finden
@@ -38,28 +38,28 @@ SCHICHTZEITEN = {
     "S04": ("13:45", "20:30"),
 }
 
-def get_raster_position(xc, yc, width, height):
-    cell_w, cell_h = width / RASTER_SPALTEN, height / RASTER_ZEILEN
-    col, row = int(xc // cell_w), int(yc // cell_h)
-    return (row, col) if 0 <= row < RASTER_ZEILEN and 0 <= col < RASTER_SPALTEN else (None, None)
-
-# Bild laden und YOLO-Modell ausführen
+# Bild laden
 img = cv2.imread(IMAGE_PATH)
 h, w = img.shape[:2]
-model = YOLO(MODEL_PATH)
-results = model(IMAGE_PATH)[0]
-class_names = model.names
 
-# Erkannte Felder in Rasterpositionen zuordnen
-felder = []
-for box in results.boxes:
-    x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
-    conf, cls = float(box.conf[0]), int(box.cls[0])
-    xc, yc = (x1 + x2) / 2, (y1 + y2) / 2
-    row, col = get_raster_position(xc, yc, w, h)
-    if row is not None:
-        felder.append((row, col, class_names[cls], conf))
-felder.sort(key=lambda x: (x[0], x[1]))
+# ONNX-Modell laden
+session = ort.InferenceSession(MODEL_PATH, providers=["CPUExecutionProvider"])
+input_name = session.get_inputs()[0].name
+
+# Bild vorbereiten
+img_resized = cv2.resize(img, (100, 100))
+img_input = img_resized.astype(np.float32) / 255.0
+img_input = np.transpose(img_input, (2, 0, 1))  # CHW
+img_input = np.expand_dims(img_input, axis=0)  # Batch
+
+# Inferenz
+outputs = session.run(None, {input_name: img_input})
+pred = np.argmax(outputs[0], axis=1)[0]
+class_names = list(SCHICHTZEITEN.keys())
+label = class_names[pred] if pred < len(class_names) else "Unbekannt"
+
+# Nur ein Feld erkannt → für Beispielzweck
+felder = [(0, 0, label, 1.0)]  # Dummy-Koordinaten, echte YOLO-Ausgabe nötig
 
 # ICS-Datei erzeugen
 with open("/config/dienstplan.ics", "w", encoding="utf-8") as f:

@@ -1,3 +1,4 @@
+# config.yaml
 name: "Dienstplan KI Parser"
 version: "1.0.1"
 slug: "dienstplan_ki_parser"
@@ -9,4 +10,3 @@ arch:
   - amd64
   - aarch64
   - armv7
-image: "local/dienstplan_ki_parser"

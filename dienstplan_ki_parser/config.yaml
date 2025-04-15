@@ -1,12 +1,12 @@
-# config.yaml
-name: "Dienstplan KI Parser"
-version: "1.0.6"
-slug: "dienstplan_ki_parser"
-description: "Erkennt automatisch Schichtpläne anhand eines Bildes"
-startup: services
-boot: auto
-init: false
+name: Dienstplan KI Parser
+version: 1.0.1
+slug: dienstplan_ki_parser
+description: Dienstplanerkennung mit YOLO und ICS-Export
 arch:
   - amd64
   - aarch64
-  - armv7
+startup: application
+boot: manual
+init: false
+options: {}
+schema: {}

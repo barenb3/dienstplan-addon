@@ -1,5 +1,5 @@
 name: Dienstplan KI Parser
-version: 1.0.123
+version: 1.0.13
 slug: dienstplan_ki_parser
 description: Dienstplanerkennung mit YOLO und ICS-Export
 arch:

@@ -9,6 +9,4 @@ arch:
   - amd64
   - aarch64
   - armv7
-options: {}
-schema: {}
 image: "local/dienstplan_ki_parser"
